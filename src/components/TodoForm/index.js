@@ -1,5 +1,5 @@
-import React, { useState, useReducer } from "react";
-import {postTask} from "../../services/tasks";
+import React, { useReducer } from "react";
+import { postTask } from "../../services/tasks";
 import "./style.css";
 
 function NewTodoForm({ task, createTodo }) {
@@ -18,11 +18,11 @@ function NewTodoForm({ task, createTodo }) {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const newTodo = { 
+    const newTodo = {
       title: userInput.title,
       description: userInput.description,
       due_date: userInput.due_date,
-      completed: false 
+      completed: false
     };
     await postTask(newTodo);
     createTodo(newTodo);
@@ -40,19 +40,19 @@ function NewTodoForm({ task, createTodo }) {
         name="title"
         placeholder="Titulo"
       />
-      <textarea 
+      <textarea
         id="description"
         name="description"
         placeholder="1 kg de arroz"
         rows="4"
         onChange={handleChange}
       ></textarea>
-      <input 
+      <input
         id="due_date"
         type="date"
         name="due_date"
         onChange={handleChange}
-        />
+      />
       <button>Agregar tarea</button>
     </form>
   );

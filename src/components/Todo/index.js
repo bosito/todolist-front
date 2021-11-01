@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./style.css";
 
-function Todo({ todo, remove, update, toggleComplete }) {
+export default function Todo({ todo, remove, update, toggleComplete }) {
   const [isEditing, setIsEditing] = useState(false);
   const [task, setTask] = useState(todo);
 
@@ -76,6 +76,4 @@ function Todo({ todo, remove, update, toggleComplete }) {
     );
   }
   return result;
-}
-
-export default Todo;
+};

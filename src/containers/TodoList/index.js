@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import Todo from "../../components/Todo";
 import NewTodoForm from "../../components/TodoForm";
-import {fechTasks, completeTask} from "../../services/tasks";
+import { fechTasks, completeTask } from "../../services/tasks";
 import "./style.css";
 
 function TodoList() {
@@ -9,13 +9,25 @@ function TodoList() {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    
-    async function getTasks(){
-      const tasks = await fechTasks();
-      setTodos(tasks);
-    }
 
-    getTasks();
+    (async () => {
+
+      const tasks = await fechTasks();
+
+      console.log('task -->', tasks);
+
+      if (!tasks) {
+
+        setTodos([]);
+
+      } else {
+
+        setTodos(tasks);
+
+      };
+
+    })()
+
   }, []);
 
   const create = newTodo => {
@@ -36,33 +48,46 @@ function TodoList() {
     setTodos(updatedTodos);
   };
 
-  const toggleComplete = id => {
-    const updatedTodos = todos.map(async todo => {
+  const toggleComplete = async id => {
+    let updateObj;
+    const updatedTodos = todos.map( todo => {
       if (todo.id === id) {
-        await completeTask(id, todo); //Para completar (marcar) la tarea en el back
+        updateObj = todo
+        //completeTask(id, todo); //Para completar (marcar) la tarea en el back
         return { ...todo, completed: !todo.completed };
       }
       return todo;
     });
+    await completeTask(id, updateObj);
     setTodos(updatedTodos);
   };
-
-  const todosList = todos.map(todo => (
-    <Todo
-      toggleComplete={toggleComplete}
-      update={update}
-      remove={remove}
-      key={todo.id}
-      todo={todo}
-    />
-  ));
 
   return (
     <div className="TodoList">
       <h1>
         Taskit <span>Lista de tareas</span>
       </h1>
-      <ul>{todosList}</ul>
+      <ul>
+        {
+          todos.length === 0 ? (
+            null
+          ) : (
+            todos.map((todo, index) => {
+              return (
+                <Fragment key={index.toString()} >
+                  <Todo
+                    toggleComplete={toggleComplete}
+                    update={update}
+                    remove={remove}
+                    key={todo.id}
+                    todo={todo}
+                  />
+                </Fragment>
+              )
+            })
+          )
+        }
+      </ul>
       <NewTodoForm createTodo={create} />
     </div>
   );
