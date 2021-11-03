@@ -69,7 +69,7 @@ export default function Todo({ todo, remove, update, toggleComplete }) {
             <i id={todo.id} className="fas fa-trash" />
           </button>
           <button onClick={toggleCompleted}>
-            <i id={todo.id} className="fas fa-check" />
+            <i id={todo.id} className={todo.completed ? "fas fa-check" : "fas fa-window-close"} />
           </button>
         </div>
       </div>

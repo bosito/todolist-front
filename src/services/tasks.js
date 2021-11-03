@@ -25,21 +25,15 @@ export const postTask = async(task) => {
     });
     return response;
   }catch(error){
+
     console.log(error);
+
   }
 }
 
 export const completeTask = async(id, task) => {
   try{
-    const data = {...task, completed: true};
-    //La lógica para hacer una solicitud/petición de tipo PUT
-    // const response = await axios({
-    //   url: `${API_URL}${RESOURCE}/${id}`,
-    //   method: 'put',
-    //   data: data
-    // });
-    const response = await axios.put(`${API_URL}${RESOURCE}/${id}`,data);
-    console.log('response -->', response.data);
+    const response = await axios.put(`${API_URL}${RESOURCE}/${id}`, { ...task });
     return response.data;
   }catch(error){
     console.log(error);

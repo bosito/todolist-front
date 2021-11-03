@@ -12,9 +12,7 @@ function NewTodoForm({ task, createTodo }) {
     }
   );
 
-  const handleChange = evt => {
-    setUserInput({ [evt.target.name]: evt.target.value });
-  };
+  const handleChange = evt => setUserInput({ [evt.target.name]: evt.target.value });
 
   const handleSubmit = async e => {
     e.preventDefault();

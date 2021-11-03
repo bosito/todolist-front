@@ -4,7 +4,7 @@ import NewTodoForm from "../../components/TodoForm";
 import { fechTasks, completeTask } from "../../services/tasks";
 import "./style.css";
 
-function TodoList() {
+export default function TodoList() {
 
   const [todos, setTodos] = useState([]);
 
@@ -13,8 +13,6 @@ function TodoList() {
     (async () => {
 
       const tasks = await fechTasks();
-
-      console.log('task -->', tasks);
 
       if (!tasks) {
 
@@ -30,13 +28,10 @@ function TodoList() {
 
   }, []);
 
-  const create = newTodo => {
-    setTodos([...todos, newTodo]); //Se está agregando la tarea en el estado
-  };
+  const create = newTodo => setTodos([...todos, newTodo]); //Se está agregando la tarea en el estado
 
-  const remove = id => {
-    setTodos(todos.filter(todo => todo.id !== id));
-  };
+  const remove = id => setTodos((todos) => todos.filter(todo => todo.id !== parseInt(id)));
+  
 
   const update = (id, updtedTask) => {
     const updatedTodos = todos.map(todo => {
@@ -52,9 +47,9 @@ function TodoList() {
     let updateObj;
     const updatedTodos = todos.map( todo => {
       if (todo.id === id) {
-        updateObj = todo
+        updateObj = { ...todo, completed: !todo.completed };
         //completeTask(id, todo); //Para completar (marcar) la tarea en el back
-        return { ...todo, completed: !todo.completed };
+        return updateObj;
       }
       return todo;
     });
@@ -92,5 +87,3 @@ function TodoList() {
     </div>
   );
 }
-
-export default TodoList;
